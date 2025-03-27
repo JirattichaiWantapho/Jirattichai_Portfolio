@@ -3,6 +3,8 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { BookOpen, Code, Database, Server, Shield, Cpu, Brain, GitBranch, Settings } from "lucide-react";
+import { useInView } from "react-intersection-observer";
+import { useState, useRef } from "react";
 
 interface CourseProps {
   title: string;
@@ -88,36 +90,96 @@ const courses: CourseProps[] = [
 ];
 
 function CourseCard({ course }: { course: CourseProps }) {
+  const cardRef = useRef<HTMLDivElement>(null);
+  const [isHovering, setIsHovering] = useState(false);
+  const [rotation, setRotation] = useState({ x: 0, y: 0 });
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!cardRef.current) return;
+    
+    const rect = cardRef.current.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
+    
+    // Reduce rotation intensity to prevent text from blurring
+    const rotateX = (y - centerY) / 60;
+    const rotateY = (centerX - x) / 60;
+    
+    setRotation({ x: rotateX, y: rotateY });
+  };
+
+  const resetRotation = () => {
+    setRotation({ x: 0, y: 0 });
+    setIsHovering(false);
+  };
+
   return (
-    <Card className="h-full border-none shadow-md hover:shadow-lg transition-shadow duration-300">
-      <CardContent className="p-6">
-        <div className="flex items-start gap-4 mb-4">
-          <div className="bg-primary/10 p-3 rounded-full">
-            {course.icon}
+    <div
+      ref={cardRef}
+      className="h-full perspective-1000"
+      onMouseMove={handleMouseMove}
+      onMouseEnter={() => setIsHovering(true)}
+      onMouseLeave={resetRotation}
+    >
+      <Card 
+        className="h-full border-none shadow-md hover:shadow-lg transition-all duration-300 bg-card/90 backdrop-blur-sm overflow-hidden group"
+        style={{
+          transform: isHovering ? 
+            `rotateX(${rotation.x}deg) rotateY(${rotation.y}deg) scale(1.01)` : 
+            'rotateX(0deg) rotateY(0deg) scale(1)',
+          transition: 'transform 0.3s ease',
+          transformStyle: 'preserve-3d'
+        }}
+      >
+        <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+        
+        <CardContent className="p-6 relative z-10">
+          <div className="flex items-start gap-4 mb-4">
+            <div className="bg-primary/10 p-3 rounded-full glass animate-pulse-slow">
+              {course.icon}
+            </div>
+            <h3 className="text-xl font-semibold mt-2 text-primary/90">{course.title}</h3>
           </div>
-          <h3 className="text-xl font-semibold mt-2">{course.title}</h3>
-        </div>
-        <ul className="space-y-2 text-muted-foreground">
-          {course.description.map((item, index) => (
-            <li key={index} className="flex gap-2">
-              <span className="text-primary mt-1">•</span>
-              <span>{item}</span>
-            </li>
-          ))}
-        </ul>
-      </CardContent>
-    </Card>
+          <ul className="space-y-2 text-muted-foreground">
+            {course.description.map((item, index) => (
+              <li key={index} className="flex gap-2">
+                <span className="text-primary mt-1">•</span>
+                <span>{item}</span>
+              </li>
+            ))}
+          </ul>
+        </CardContent>
+      </Card>
+    </div>
   );
 }
 
 export function Coursework() {
+  const { ref, inView } = useInView({
+    triggerOnce: true,
+    threshold: 0.1,
+  });
+
   return (
-    <section id="coursework" className="py-16 md:py-24 bg-muted/50 animate-fadeInUp">
-      <div className="container">
+    <section
+      id="coursework"
+      ref={ref}
+      className={`py-16 md:py-24 bg-muted relative overflow-hidden ${
+        inView ? "animate-fadeInUp" : "opacity-0"
+      }`}
+    >
+      {/* Background blob */}
+      <div className="absolute top-1/4 -left-32 w-96 h-96 bg-primary/5 rounded-full filter blur-3xl opacity-70 animate-morphGradient"></div>
+      <div className="container relative z-10">
         <div className="flex flex-col items-center text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">Coursework</h2>
-          <div className="w-20 h-1 bg-primary rounded mb-6"></div>
-          <p className="text-muted-foreground max-w-[700px]">
+          <h2 className="text-3xl md:text-4xl font-bold mb-4 relative">
+            Coursework
+            <span className="absolute -bottom-2 left-1/2 w-20 h-1 bg-primary rounded -translate-x-1/2"></span>
+          </h2>
+          <p className="text-muted-foreground max-w-[700px] mt-8">
             A comprehensive overview of my academic coursework, ordered from most recent to oldest.
           </p>
         </div>

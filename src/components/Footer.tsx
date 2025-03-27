@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 
 export function Footer() {
   return (
-    <footer className="border-t py-8 md:py-12">
+    <footer className="border-t py-8 md:py-12 animate-fadeInUp">
       <div className="container flex flex-col gap-6 md:flex-row md:justify-between md:gap-0">
         <div className="flex flex-col gap-2">
           <div className="font-semibold">Jirattichai Wantapho</div>

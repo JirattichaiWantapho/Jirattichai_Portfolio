@@ -88,6 +88,7 @@ html {
   }
   .animate-fadeInUp {
     animation: fadeInUp 0.8s ease-in-out forwards;
+    transition: background-color 0.5s ease-in-out;
   }
 
   @keyframes fadeInLeft {
@@ -117,4 +118,132 @@ html {
   .animate-fadeInDown {
     animation: fadeInDown 0.8s ease-in-out forwards;
   }
+
+  @keyframes floating {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-10px);
+    }
+  }
+  .animate-floating {
+    animation: floating 3s ease-in-out infinite;
+  }
+
+  @keyframes rotateGradient {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+  .animate-rotateGradient {
+    background-size: 200% 200%;
+    animation: rotateGradient 6s ease infinite;
+  }
+
+  @keyframes scaleIn {
+    0% {
+      transform: scale(0.9);
+      opacity: 0;
+    }
+    100% {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+  .animate-scaleIn {
+    animation: scaleIn 0.8s ease-in-out forwards;
+  }
+
+  @keyframes morphGradient {
+    0% {
+      border-radius: 60% 40% 30% 70%/60% 30% 70% 40%;
+    }
+    50% {
+      border-radius: 30% 60% 70% 40%/50% 60% 30% 60%;
+    }
+    100% {
+      border-radius: 60% 40% 30% 70%/60% 30% 70% 40%;
+    }
+  }
+  .animate-morphGradient {
+    animation: morphGradient 8s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 0.8;
+      transform: scale(1.05);
+    }
+  }
+  .animate-pulse-slow {
+    animation: pulse 4s ease-in-out infinite;
+  }
+
+  @keyframes shimmer {
+    0% {
+      background-position: -200% 0;
+    }
+    100% {
+      background-position: 200% 0;
+    }
+  }
+  .animate-shimmer {
+    background: linear-gradient(90deg, 
+      rgba(255,255,255,0) 0%, 
+      rgba(255,255,255,0.05) 50%, 
+      rgba(255,255,255,0) 100%);
+    background-size: 200% 100%;
+    animation: shimmer 3s infinite;
+  }
+
+  .card-3d-effect {
+    transition: transform 0.5s ease;
+    transform-style: preserve-3d;
+    perspective: 1000px;
+  }
+  
+  .parallax-scroll {
+    transition: transform 0.3s cubic-bezier(0.2, 0, 0.3, 1);
+  }
+}
+
+/* Glass effect styles */
+.glass {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.dark .glass {
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* Hamburger menu animation */
+.hamburger-line {
+  transition: all 0.3s ease;
+}
+
+.open .hamburger-line:nth-child(1) {
+  transform: translateY(8px) rotate(45deg);
+}
+
+.open .hamburger-line:nth-child(2) {
+  opacity: 0;
+}
+
+.open .hamburger-line:nth-child(3) {
+  transform: translateY(-8px) rotate(-45deg);
 }

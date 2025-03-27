@@ -3,6 +3,8 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Code, Database, Server, Shield, Computer, Terminal } from "lucide-react";
+import { useInView } from "react-intersection-observer";
+import { useState } from "react";
 
 const skillCategories = [
   {
@@ -94,13 +96,31 @@ const skillCategories = [
 ];
 
 export function Skills() {
+  const { ref, inView } = useInView({
+    triggerOnce: true,
+    threshold: 0.1,
+  });
+  
+  const [hoveredSkill, setHoveredSkill] = useState<string | null>(null);
+
   return (
-    <section id="skills" className="py-16 md:py-24 animate-fadeInUp">
-      <div className="container">
+    <section
+      id="skills"
+      ref={ref}
+      className={`py-16 md:py-24 bg-muted/50 relative overflow-hidden ${
+        inView ? "animate-fadeInUp" : "opacity-0"
+      }`}
+    >
+      {/* Background effects */}
+      <div className="absolute -bottom-32 -left-32 w-96 h-96 bg-primary/10 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-morphGradient"></div>
+      
+      <div className="container relative z-10">
         <div className="flex flex-col items-center text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">Technical Skills</h2>
-          <div className="w-20 h-1 bg-primary rounded mb-6"></div>
-          <p className="text-muted-foreground max-w-[700px]">
+          <h2 className="text-3xl md:text-4xl font-bold mb-4 relative">
+            Technical Skills
+            <span className="absolute -bottom-2 left-1/2 w-20 h-1 bg-primary rounded -translate-x-1/2"></span>
+          </h2>
+          <p className="text-muted-foreground max-w-[700px] mt-8">
             My technical expertise across various domains of computer engineering.
           </p>
         </div>
@@ -111,7 +131,7 @@ export function Skills() {
               <TabsTrigger
                 key={category.id}
                 value={category.id}
-                className="flex items-center gap-2 px-4 py-2 m-1 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+                className="flex items-center gap-2 px-4 py-2 m-1 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground transition-all duration-300 hover:scale-105 glass data-[state=active]:shadow-md"
               >
                 {category.icon}
                 {category.name}
@@ -120,10 +140,10 @@ export function Skills() {
           </TabsList>
 
           {skillCategories.map((category) => (
-            <TabsContent key={category.id} value={category.id}>
-              <Card className="border-none shadow-md">
+            <TabsContent key={category.id} value={category.id} className="animate-scaleIn">
+              <Card className="border-none shadow-lg bg-card/80 backdrop-blur-sm">
                 <CardContent className="p-6 md:p-8">
-                  <h3 className="text-xl font-semibold mb-6 flex items-center gap-2">
+                  <h3 className="text-xl font-semibold mb-6 flex items-center gap-2 text-primary/90">
                     {category.icon}
                     {category.name} Skills
                   </h3>
@@ -131,9 +151,14 @@ export function Skills() {
                     {category.skills.map((skill) => (
                       <div
                         key={skill}
-                        className="bg-muted rounded-md p-3 text-center hover:bg-primary/10 transition-colors"
+                        className={`bg-muted rounded-md p-3 text-center transition-all duration-300 relative overflow-hidden ${
+                          hoveredSkill === skill ? 'bg-primary/20 scale-105 shadow-md' : 'hover:bg-primary/10'
+                        }`}
+                        onMouseEnter={() => setHoveredSkill(skill)}
+                        onMouseLeave={() => setHoveredSkill(null)}
                       >
-                        {skill}
+                        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-primary/5 to-transparent animate-shimmer opacity-0 group-hover:opacity-100"></div>
+                        <span className="relative z-10">{skill}</span>
                       </div>
                     ))}
                   </div>

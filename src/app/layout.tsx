@@ -3,6 +3,7 @@ import { Outfit } from "next/font/google";
 import "@/app/globals.css";
 import ClientBody from "./ClientBody";
 import { Toaster } from "@/components/ui/toaster";
+import { ThemeProvider } from "@/components/ThemeProvider";
 
 const outfit = Outfit({ subsets: ["latin"] });
 
@@ -19,10 +20,12 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`animate-fadeIn ${outfit.className}`}>
-        <ClientBody>
-          {children}
-        </ClientBody>
-        <Toaster />
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          <ClientBody>
+            {children}
+          </ClientBody>
+          <Toaster />
+        </ThemeProvider>
       </body>
     </html>
   );
