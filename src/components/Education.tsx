@@ -3,10 +3,20 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { GraduationCap, BookOpen } from "lucide-react";
+//import { useInView } from "react-intersection-observer";
 
 export function Education() {
+  // const { ref, inView } = useInView({
+  //   triggerOnce: true,
+  //   threshold: 0.1,
+  // });
+
   return (
-    <section id="education" className="py-16 md:py-24 bg-muted/50">
+    // <section
+    //   id="education"
+    //   ref={ref}
+    //   className={`py-16 md:py-24 bg-muted/50 ${inView ? "animate-fadeInUp" : ""}`}
+    // >
       <div className="container">
         <div className="flex flex-col items-center text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">Education</h2>
@@ -69,6 +79,6 @@ export function Education() {
           </CardContent>
         </Card>
       </div>
-    </section>
+    // </section>
   );
 }

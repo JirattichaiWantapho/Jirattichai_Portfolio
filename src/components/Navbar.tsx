@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Menu, X, Moon, Sun } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { usePathname } from "next/navigation";
 
 const navLinks = [
   { name: "Home", href: "/" },
@@ -17,15 +18,34 @@ const navLinks = [
 ];
 
 export function Navbar() {
+  const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const [darkMode, setDarkMode] = useState(false);
+  const [activeSection, setActiveSection] = useState("");
 
   useEffect(() => {
     document.documentElement.classList.toggle("dark", darkMode);
   }, [darkMode]);
 
+  useEffect(() => {
+    const sections = document.querySelectorAll("section[id]");
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setActiveSection(entry.target.id || "home");
+          }
+        });
+      },
+      { threshold: 0.5 }
+    );
+
+    sections.forEach((section) => observer.observe(section));
+    return () => sections.forEach((section) => observer.unobserve(section));
+  }, []);
+
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-background/90 backdrop-blur">
+    <header className="sticky top-0 z-50 w-full border-b bg-background/90 backdrop-blur animate-fadeInDown">
       <div className="container flex h-16 items-center justify-between">
         <div className="font-semibold text-xl">
           <Link href="/">Jirattichai Wantapho</Link>
@@ -35,7 +55,11 @@ export function Navbar() {
             <Link
               key={link.name}
               href={link.href}
-              className="text-sm font-medium transition-colors hover:text-primary"
+              className={`text-sm font-medium transition-all hover:text-primary hover:scale-105 ${
+                activeSection === (link.href === "/" ? "home" : link.href.slice(1))
+                  ? "text-primary font-bold"
+                  : ""
+              }`}
             >
               {link.name}
             </Link>

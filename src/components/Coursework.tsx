@@ -112,7 +112,7 @@ function CourseCard({ course }: { course: CourseProps }) {
 
 export function Coursework() {
   return (
-    <section id="coursework" className="py-16 md:py-24 bg-muted/50">
+    <section id="coursework" className="py-16 md:py-24 bg-muted/50 animate-fadeInUp">
       <div className="container">
         <div className="flex flex-col items-center text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">Coursework</h2>

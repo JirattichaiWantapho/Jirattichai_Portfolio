@@ -3,10 +3,31 @@
 import { Button } from "@/components/ui/button";
 import { ArrowDownToLine, Github, Linkedin, Mail, Phone } from "lucide-react";
 import Link from "next/link";
+import { useEffect, useRef, useState } from "react";
 
 export function Hero() {
+  const heroRef = useRef<HTMLElement>(null);
+  const [inView, setInView] = useState(false);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(([entry]) => {
+      setInView(entry.isIntersecting);
+    }, { threshold: 0.3 });
+
+    if (heroRef.current) observer.observe(heroRef.current);
+    return () => {
+      if (heroRef.current) observer.unobserve(heroRef.current);
+    };
+  }, []);
+
   return (
-    <section className="relative py-20 md:py-32 overflow-hidden">
+    <section
+      id="home"
+      ref={heroRef}
+      className={`relative py-20 md:py-32 overflow-hidden ${
+        inView ? "animate-fadeInUp" : ""
+      }`}
+    >
       {/* Background gradient */}
       <div className="absolute inset-0 pointer-events-none bg-gradient-to-br from-background via-background to-background/0 z-0" />
 
