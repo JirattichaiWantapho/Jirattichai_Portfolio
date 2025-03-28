@@ -2,7 +2,9 @@
 
 A modern, responsive personal portfolio built with Next.js, TypeScript, and Tailwind CSS. This portfolio showcases my skills, projects, education, and contact information with elegant UI components and smooth animations.
 
-![Portfolio Screenshot](https://placeholder-for-your-screenshot.png)
+## Screenshot
+
+![Portfolio Screenshot](./Screenshot%202025-03-28%20213826.png)
 
 ## Features
 
