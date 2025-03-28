@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { usePathname } from "next/navigation";
 import { useTheme } from "next-themes";
+import { useRouter } from "next/navigation";
 
 const navLinks = [
   { name: "Home", href: "/" },
@@ -25,6 +26,7 @@ export function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const { theme, setTheme } = useTheme();
   const isDarkMode = theme === "dark";
+  const router = useRouter();
 
   useEffect(() => {
     document.documentElement.classList.toggle("dark", isDarkMode);
@@ -47,6 +49,28 @@ export function Navbar() {
     return () => sections.forEach((section) => observer.unobserve(section));
   }, []);
 
+  useEffect(() => {
+    const scrollY = document.documentElement.style.getPropertyValue("--scroll-y");
+    if (open) {
+      document.body.style.overflow = "hidden";
+      document.body.style.position = "fixed";
+      document.body.style.top = `-${scrollY}`;
+    } else {
+      const scrollPosition = parseInt(scrollY || "0", 10);
+      document.body.style.overflow = "";
+      document.body.style.position = "";
+      document.body.style.top = "";
+    }
+  }, [open]);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      document.documentElement.style.setProperty("--scroll-y", `${window.scrollY}px`);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/90 backdrop-blur-md animate-fadeInDown glass">
       <div className="container flex h-16 items-center justify-between">
@@ -61,6 +85,17 @@ export function Navbar() {
             <Link
               key={link.name}
               href={link.href}
+              onClick={(e) => {
+                // Only smooth-scroll if we're on home and the link is home
+                if (link.href === "/" && pathname === "/") {
+                  e.preventDefault();
+                  setOpen(false);
+                  window.scrollTo({ top: 0, behavior: "smooth" });
+                } else {
+                  // Close menu and let Next.js handle anchor or route navigation
+                  setOpen(false);
+                }
+              }}
               className={`text-sm font-medium transition-all duration-300 hover:text-primary relative group ${
                 activeSection === (link.href === "/" ? "home" : link.href.slice(1))
                   ? "text-primary font-bold"
@@ -90,9 +125,9 @@ export function Navbar() {
               onClick={() => setMenuOpen(!menuOpen)}
             >
               <div className="w-5 flex flex-col gap-1.5">
-                <span className="hamburger-line block h-0.5 w-full bg-current"></span>
-                <span className="hamburger-line block h-0.5 w-full bg-current"></span>
-                <span className="hamburger-line block h-0.5 w-full bg-current"></span>
+                <span className={`hamburger-line block h-0.5 w-full bg-current transition-transform ${open ? "rotate-45 translate-y-1.5" : ""}`}></span>
+                <span className={`hamburger-line block h-0.5 w-full bg-current transition-opacity ${open ? "opacity-0" : ""}`}></span>
+                <span className={`hamburger-line block h-0.5 w-full bg-current transition-transform ${open ? "-rotate-45 -translate-y-1.5" : ""}`}></span>
               </div>
               <span className="sr-only">Toggle menu</span>
             </Button>
@@ -103,7 +138,17 @@ export function Navbar() {
                 <Link
                   key={link.name}
                   href={link.href}
-                  onClick={() => setOpen(false)}
+                  onClick={(e) => {
+                    // Only smooth-scroll if we're on home and the link is home
+                    if (link.href === "/" && pathname === "/") {
+                      e.preventDefault();
+                      setOpen(false);
+                      window.scrollTo({ top: 0, behavior: "smooth" });
+                    } else {
+                      // Close menu and let Next.js handle anchor or route navigation
+                      setOpen(false);
+                    }
+                  }}
                   className="text-sm font-medium transition-all duration-300 hover:text-primary hover:translate-x-1"
                 >
                   {link.name}
