@@ -75,16 +75,6 @@ output: 'export',
 distDir: 'out',
 ```
 
-### Deploy on Netlify
-
-You can deploy on Netlify using the provided `netlify.toml` configuration:
-
-1. Push your repository to GitHub
-2. Go to [Netlify](https://app.netlify.com/) and sign in
-3. Click "New site from Git" and select your repository
-4. Netlify will automatically detect the build settings from the netlify.toml file
-5. Click "Deploy site"
-
 ### Deploy on Render
 
 To deploy this site on Render:
