@@ -104,6 +104,18 @@ function ProjectCard({ project }: { project: ProjectProps }) {
 
 const projects: ProjectProps[] = [
   {
+    title: "Mini-IDS – Intrusion Detection System",
+    role: "Full Stack Developer",
+    description: [
+      "Developed an intrusion detection system to capture packets in real-time using Scapy.",
+      "Implemented a modular architecture with detectors for common attack patterns.",
+      "Logged protocol-based statistics and suspicious IP behaviors.",
+      "Integrated alerts via GUI, logs, popups, and LINE Messaging API."
+    ],
+    technologies: ["Python", "Scapy", "LINE Messaging API"],
+    icon: <VerifiedIcon className="h-6 w-6 text-primary" />
+  },
+  {
     title: "Flight Booking System",
     role: "Frontend Developer",
     description: [
