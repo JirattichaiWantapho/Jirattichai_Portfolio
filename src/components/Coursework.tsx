@@ -61,7 +61,7 @@ const courses: CourseProps[] = [
     icon: <Database className="h-6 w-6 text-primary" />
   },
   {
-    title: "CPE 361 Java Programming",
+    title: "Java Programming",
     description: [
       "Explores Java programming fundamentals, including compiling, data types, variables, arrays, and control structures.",
       "Covers object-oriented programming(OOP) concepts such as classes, objects, and exception handling.",
