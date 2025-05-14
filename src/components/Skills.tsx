@@ -17,6 +17,7 @@ const skillCategories = [
       "Python",
       "C",
       "C#",
+      "Java",
       "Dart",
       "SQL",
       "Bash",

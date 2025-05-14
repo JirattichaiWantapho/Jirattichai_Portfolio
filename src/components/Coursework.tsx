@@ -61,6 +61,15 @@ const courses: CourseProps[] = [
     icon: <Database className="h-6 w-6 text-primary" />
   },
   {
+    title: "CPE 361 Java Programming",
+    description: [
+      "Explores Java programming fundamentals, including compiling, data types, variables, arrays, and control structures.",
+      "Covers object-oriented programming(OOP) concepts such as classes, objects, and exception handling.",
+      "Introduces advanced topics like I/O, GUI, G2D, threads, serialization, and communication."
+    ],
+    icon: <BookOpen className="h-6 w-6 text-primary" />
+  },
+  {
     title: "Computer Networks",
     description: [
       "TCP/IP, network architecture, routing algorithms",
